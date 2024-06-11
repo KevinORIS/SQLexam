@@ -118,34 +118,30 @@ public class PatientDAO extends AbstractDAO implements PatientManager {
 	public Patient findLeastPayPatient() {
 
 		int leastPayPatientId = 0;
-		
-		try {
-			PreparedStatement statement = connection.prepareStatement(GET_PATIENTS_AND_DISEASES);
-		
-			ResultSet resultSet = statement.executeQuery();
-			
-			int leastPay = Integer.MAX_VALUE;
-			int patientId = 0;
-			int patientPay = 0;
-			
-			while(resultSet.next()) {
-				if(patientId == resultSet.getInt("id_patient")) {
-					patientPay += resultSet.getInt("treatment_price");
-				} else {
-					patientId = resultSet.getInt("id_patient");
-					patientPay = resultSet.getInt("treatment_price");
-					if(leastPay > patientPay) {
-						leastPay = patientPay;
-						leastPayPatientId = patientId;
-					}
-				}
-				
-			}
-			
-		} catch (SQLException e) {
-			System.out.print(e);
-		}
-		return get(leastPayPatientId);
+	    
+	    try {
+	        PreparedStatement statement = connection.prepareStatement(GET_PATIENTS_AND_DISEASES);
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        int leastPay = Integer.MAX_VALUE;
+	        Map<Integer, Integer> patientPayMap = new HashMap<>();
+	        while (resultSet.next()) {
+	            int currentPatientId = resultSet.getInt("id_patient");
+	            int treatmentPrice = resultSet.getInt("treatment_price");
+	            	      
+	            patientPayMap.put(currentPatientId, patientPayMap.getOrDefault(currentPatientId, 0) + treatmentPrice);
+	            
+	            if (leastPay > patientPayMap.get(currentPatientId)) {
+	                leastPay = patientPayMap.get(currentPatientId);
+	                leastPayPatientId = currentPatientId;
+	            }
+	        }
+	        
+	    } catch (SQLException e) {
+	        System.out.print(e);
+	    }
+	    
+	    return get(leastPayPatientId);
 	}
 
 	@Override
@@ -166,7 +162,7 @@ public class PatientDAO extends AbstractDAO implements PatientManager {
 			    int currentPatientId = resultSet.getInt("id_patient");
 			    int treatmentPrice = resultSet.getInt("treatment_price");
 			    
-			    if(patientId != currentPatientId) {
+			    if (patientId != currentPatientId) {
 			        if(patientPay > mostPay) {
 			            mostPay = patientPay;
 			            mostPayPatientId = patientId;
