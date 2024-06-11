@@ -129,16 +129,17 @@ public class PatientDAO extends AbstractDAO implements PatientManager {
 			int patientPay = 0;
 			
 			while(resultSet.next()) {
-				if(patientId != resultSet.getInt("id_patient")) {
+				if(patientId == resultSet.getInt("id_patient")) {
+					patientPay += resultSet.getInt("treatment_price");
+				} else {
 					patientId = resultSet.getInt("id_patient");
 					patientPay = resultSet.getInt("treatment_price");
-				} else {
-					patientPay += resultSet.getInt("treatment_price");
+					if(leastPay > patientPay) {
+						leastPay = patientPay;
+						leastPayPatientId = patientId;
+					}
 				}
-				if(leastPay > patientPay) {
-					leastPay = patientPay;
-					leastPayPatientId = patientId;
-				}
+				
 			}
 			
 		} catch (SQLException e) {
