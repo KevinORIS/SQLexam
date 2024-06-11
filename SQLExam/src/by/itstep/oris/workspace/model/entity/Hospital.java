@@ -15,7 +15,11 @@ public class Hospital implements Iterable<Patient> {
     public void addPatient(Patient patient) {
         patients.add(patient);
     }
-
+    
+    public int getPatientsCount() {
+        return patients.size();
+    }
+    
     @Override
     public Iterator<Patient> iterator() {
         return patients.iterator();
