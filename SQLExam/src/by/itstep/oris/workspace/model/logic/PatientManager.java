@@ -1,11 +1,13 @@
 package by.itstep.oris.workspace.model.logic;
 
+import by.itstep.oris.workspace.model.entity.Patient;
+
 public interface PatientManager {
-	void calcTotalPatientCount();
+	int calcTotalPatientCount();
 	
-	void findLeastPayPatient();
+	Patient findLeastPayPatient();
 	
-	void findMostPayPatient();
+	Patient findMostPayPatient();
 	
-	void findMostPopularTreatment();
+	String findMostPopularTreatment();
 }
