@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import by.itstep.oris.workspace.model.entity.Hospital;
 import by.itstep.oris.workspace.model.entity.Patient;
@@ -189,7 +191,33 @@ public class PatientDAO extends AbstractDAO implements PatientManager {
 
 	@Override
 	public String findMostPopularTreatment() {
-		return "";
+		Map<String, Integer> nameCountMap = new HashMap<>();
+	    
+	    try {
+	        PreparedStatement statement = connection.prepareStatement(GET_PATIENTS_AND_DISEASES);
+	        ResultSet resultSet = statement.executeQuery();
+	        
+	        while (resultSet.next()) {
+	            String currentDisease = resultSet.getString("name");
+	            nameCountMap.put(currentDisease, nameCountMap.getOrDefault(currentDisease, 0) + 1);
+	        }
+	        
+	    } catch (SQLException e) {
+	        System.out.print(e);
+	    }
+	    
+	    
+	    String mostCommonDisease = "";
+	    int maxCount = 0;
+	    
+	    for (Map.Entry<String, Integer> entry : nameCountMap.entrySet()) {
+	        if (entry.getValue() > maxCount) {
+	            maxCount = entry.getValue();
+	            mostCommonDisease = entry.getKey();
+	        }
+	    }
+	    
+	    return mostCommonDisease;
 	}
 
 }
