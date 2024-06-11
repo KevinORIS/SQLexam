@@ -1,6 +1,9 @@
 package by.itstep.oris.workspace.dal;
 
 public interface CRUD {
-	void connect();
-	void release();
+	void insert();
+	void delete();
+	void update();
+	void get();
+	void getAll();
 }
