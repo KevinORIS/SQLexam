@@ -11,7 +11,7 @@ public class Main {
 		
 		patientDAO.connect();
 		
-		Patient patient = patientDAO.findMostPayPatient();
+		Patient patient = patientDAO.findLeastPayPatient();
 		
 		System.out.print(patient.getFirstName());
 		
