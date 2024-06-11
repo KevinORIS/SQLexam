@@ -6,13 +6,13 @@ import java.sql.SQLException;
 
 public abstract class AbstractDAO implements CRUD {
 	public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-	public static final String URL = "jdbc.mysql://localhost:3306/hospital";
+	public static final String URL = "jdbc:mysql://localhost:3306/hospital";
 	public static final String LOGIN = "root";
 	public static final String PASSWORD = "mysql123";
 	
-	protected Connection connection;
+	public Connection connection;
 	
-	protected void connect() {
+	public void connect() {
 		try {
 			Class.forName(DRIVER);
 			
