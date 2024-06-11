@@ -5,7 +5,10 @@ public class Patient {
 	private String secondName;
 	private int age;
 	private byte gender;
-
+	
+	public Patient() {
+	}
+	
 	public Patient(String firstName, String secondName, int age, byte gender) {
 		this.firstName = firstName;
 		this.secondName = secondName;
